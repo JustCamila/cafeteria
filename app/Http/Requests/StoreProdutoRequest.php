@@ -22,10 +22,13 @@ class StoreProdutoRequest extends FormRequest
             $preco = str_replace(['.', ','], ['', '.'], $preco);
         }
 
-        $this->merge([
-            'preco_unitario' => $preco,
-            'eh_cafe' => $this->boolean('eh_cafe'),
-        ]);
+        $this->merge(['preco_unitario' => $preco]);
+
+        // o formulário sempre envia eh_cafe (campo hidden com 0 + checkbox com 1);
+        // se não vier, os detalhes do café não são alterados
+        if ($this->has('eh_cafe')) {
+            $this->merge(['eh_cafe' => $this->boolean('eh_cafe')]);
+        }
     }
 
     public function rules(): array
@@ -43,7 +46,7 @@ class StoreProdutoRequest extends FormRequest
             'estoque' => 'nullable|integer|min:0',
 
             // detalhes do café: só são obrigatórios quando o produto é um café
-            'eh_cafe' => 'boolean',
+            'eh_cafe' => 'sometimes|boolean',
             'origem_grao' => 'nullable|required_if:eh_cafe,true|string|max:50',
             'tipo_torra' => 'nullable|required_if:eh_cafe,true|in:Clara,Média,Forte',
             'notas_degustacao' => 'nullable|string|max:50',
