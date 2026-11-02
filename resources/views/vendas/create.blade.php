@@ -25,21 +25,28 @@
                         </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Produto</label>
-                        <select name="produto_id" class="form-select">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Preço</th>
+                                <th>Estoque</th>
+                                <th>Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                             @foreach ($produtos as $produto)
-                                <option value="{{ $produto->id_produto }}" @selected(old('produto_id') == $produto->id_produto)>
-                                    {{ $produto->nome }} - R$ {{ number_format($produto->preco_unitario, 2, ',', '.') }} (estoque: {{ $produto->estoque }})
-                                </option>
+                                <tr>
+                                    <td>{{ $produto->nome }}</td>
+                                    <td>R$ {{ number_format($produto->preco_unitario, 2, ',', '.') }}</td>
+                                    <td>{{ $produto->estoque }}</td>
+                                    <td>
+                                        <input type="number" name="quantidades[{{ $produto->id_produto }}]" class="form-control" min="0" value="{{ old('quantidades.' . $produto->id_produto) }}">
+                                    </td>
+                                </tr>
                             @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Quantidade</label>
-                        <input type="number" name="quantidade" class="form-control" min="1" value="{{ old('quantidade', 1) }}">
-                    </div>
+                        </tbody>
+                    </table>
 
                     <button type="submit" class="btn btn-dark">Registrar venda</button>
                 </form>
