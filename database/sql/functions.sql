@@ -1,3 +1,4 @@
+-- mostra os produtos que mais venderam e quanto cada um faturou
 create or replace function fn_produtos_mais_vendidos(p_limite int)
 returns table (
     produto varchar,
@@ -15,6 +16,8 @@ begin
 end;
 $$ language plpgsql;
 
+-- mostra quantos pedidos o cliente fez, quanto já gastou e quando foi a última compra
+-- o left join mantém na lista o cliente que ainda não comprou nada
 create or replace function fn_resumo_cliente(p_cpf varchar)
 returns table (
     nome_cliente varchar,
