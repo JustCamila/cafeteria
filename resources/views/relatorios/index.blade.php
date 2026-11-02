@@ -33,7 +33,7 @@
 
         <form action="{{ route('relatorios.index') }}" method="GET" class="row g-2 mb-3">
             <div class="col-auto">
-                <input type="text" name="cpf" class="form-control" maxlength="11" placeholder="CPF" value="{{ $cpf }}">
+                <input type="text" name="cpf" class="form-control" maxlength="14" placeholder="CPF" value="{{ $cpf }}">
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-dark">Buscar</button>

@@ -13,6 +13,8 @@ class RelatorioController extends Controller
 
     public function index(Request $request)
     {
+        $request->merge(['cpf' => preg_replace('/\D/', '', (string) $request->input('cpf')) ?: null]);
+
         $dados = $request->validate([
             'cpf' => 'nullable|digits:11',
         ], [
