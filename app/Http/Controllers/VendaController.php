@@ -25,19 +25,18 @@ class VendaController extends Controller
         $dados = $request->validate([
             'cpf' => 'nullable|digits:11',
             'forma_pagamento' => 'required|in:Cartão de Crédito,Cartão de Débito,Pix,Dinheiro',
-            'produto_id' => 'required|integer',
-            'quantidade' => 'required|integer|min:1',
+            'quantidades' => 'required|array',
+            'quantidades.*' => 'nullable|integer|min:0',
         ], [
             'cpf.digits' => 'O CPF deve ter 11 números.',
-            'quantidade.min' => 'A quantidade deve ser maior que zero.',
+            'quantidades.*.min' => 'A quantidade não pode ser negativa.',
         ]);
 
         try {
             $this->vendaService->registrarVenda(
                 $dados['cpf'] ?? null,
                 $dados['forma_pagamento'],
-                $dados['produto_id'],
-                $dados['quantidade']
+                array_filter($dados['quantidades'])
             );
         } catch (RuntimeException $e) {
             return back()->withInput()->with('error', $e->getMessage());
