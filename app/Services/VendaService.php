@@ -8,9 +8,12 @@ use RuntimeException;
 
 class VendaService
 {
-    public function registrarVenda(?string $cpf, string $formaPagamento, int $produtoId, int $quantidade): void
+    public function registrarVenda(?string $cpf, string $formaPagamento, array $itens): void
     {
-        $this->executar('CALL sp_registrar_venda(?, ?, ?, ?)', [$cpf, $formaPagamento, $produtoId, $quantidade]);
+        $produtos = '{' . implode(',', array_keys($itens)) . '}';
+        $quantidades = '{' . implode(',', array_values($itens)) . '}';
+
+        $this->executar('CALL sp_registrar_venda(?, ?, ?, ?)', [$cpf, $formaPagamento, $produtos, $quantidades]);
     }
 
     public function reporEstoque(int $produtoId, int $quantidade): void
