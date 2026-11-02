@@ -13,6 +13,8 @@
             <ul class="navbar-nav">
                 {{-- O João completa o menu com os CRUDs e a Leticia com as telas dela --}}
                 <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Início</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('vendas.create') }}">Registrar venda</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('relatorios.index') }}">Relatórios</a></li>
             </ul>
         </div>
     </nav>
