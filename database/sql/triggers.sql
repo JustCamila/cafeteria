@@ -1,9 +1,22 @@
-create or replace function fn_baixar_estoque()
+-- mantém o estoque certo sempre que um item do pedido é criado, editado ou excluído
+-- primeiro devolve a quantidade antiga e depois baixa a nova
+-- bloqueia a operação quando não tem estoque suficiente
+create or replace function fn_controlar_estoque()
 returns trigger as $$
 declare
     v_nome varchar;
     v_estoque int;
 begin
+    if tg_op in ('UPDATE', 'DELETE') then
+        update produto
+        set estoque = estoque + old.quantidade
+        where id_produto = old.produto_id;
+    end if;
+
+    if tg_op = 'DELETE' then
+        return old;
+    end if;
+
     select nome, estoque into v_nome, v_estoque
     from produto
     where id_produto = new.produto_id
@@ -21,12 +34,13 @@ begin
 end;
 $$ language plpgsql;
 
-drop trigger if exists trg_baixar_estoque on itens_pedido;
-create trigger trg_baixar_estoque
-before insert on itens_pedido
+drop trigger if exists trg_controlar_estoque on itens_pedido;
+create trigger trg_controlar_estoque
+before insert or update or delete on itens_pedido
 for each row
-execute function fn_baixar_estoque();
+execute function fn_controlar_estoque();
 
+-- recalcula o valor total do pedido sempre que os itens mudam
 create or replace function fn_atualizar_valor_total()
 returns trigger as $$
 declare
