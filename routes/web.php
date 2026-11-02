@@ -23,7 +23,13 @@ Route::post('/vendas/repor-estoque', [VendaController::class, 'reporEstoque'])->
 Route::get('/relatorios', [RelatorioController::class, 'index'])->name('relatorios.index');
 
 // CRUDs (Resource Controllers)
-// os nomes dos parâmetros são definidos na mão para bater com o route model binding
+// os nomes dos parâmetros são definidos na mão para bater com o route model binding,
+// e só aceitam números: assim /pedidos/abc dá 404 em vez de erro no PostgreSQL
+Route::pattern('categoria', '[0-9]+');
+Route::pattern('cliente', '[0-9]+');
+Route::pattern('produto', '[0-9]+');
+Route::pattern('pedido', '[0-9]+');
+
 Route::resource('categorias', CategoriaController::class)->parameters(['categorias' => 'categoria']);
 Route::resource('clientes', ClienteController::class)->parameters(['clientes' => 'cliente']);
 Route::resource('produtos', ProdutoController::class)->parameters(['produtos' => 'produto']);
