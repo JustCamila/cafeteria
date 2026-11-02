@@ -38,6 +38,6 @@ class VendaService
 
         preg_match('/^[A-Z]+:\s+(.+)$/mu', $e->errorInfo[2], $partes);
 
-        return ucfirst($partes[1]);
+        return ucfirst($partes[1] ?? 'Não foi possível concluir a operação.');
     }
 }
