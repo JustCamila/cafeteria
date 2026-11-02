@@ -13,7 +13,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">CPF do cliente (opcional)</label>
-                        <input type="text" name="cpf" class="form-control" maxlength="11" value="{{ old('cpf') }}">
+                        <input type="text" name="cpf" class="form-control" maxlength="14" value="{{ old('cpf') }}">
                     </div>
 
                     <div class="mb-3">

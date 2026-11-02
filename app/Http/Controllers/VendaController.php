@@ -22,6 +22,8 @@ class VendaController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(['cpf' => preg_replace('/\D/', '', (string) $request->input('cpf')) ?: null]);
+
         $dados = $request->validate([
             'cpf' => 'nullable|digits:11',
             'forma_pagamento' => 'required|in:Cartão de Crédito,Cartão de Débito,Pix,Dinheiro',
