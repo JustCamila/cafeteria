@@ -54,16 +54,17 @@ class ProdutoService
     }
 
     // a FK de itens_pedido é "on delete restrict": produto que já foi vendido não pode ser excluído
+    // o PostgreSQL responde 23001 (restrict_violation) ou 23503 (foreign_key_violation), depende da versão
     public function excluir(Produto $produto): void
     {
         try {
             $produto->delete();
         } catch (QueryException $e) {
-            if (($e->errorInfo[0] ?? null) === '23503') {
+            if (in_array($e->errorInfo[0] ?? null, ['23001', '23503'], true)) {
                 throw new RuntimeException('Esse produto já aparece em pedidos e não pode ser excluído.');
             }
 
-            throw $e;
+            throw new RuntimeException('Não foi possível excluir o produto.');
         }
     }
 
