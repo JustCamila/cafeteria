@@ -10,12 +10,25 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">☕ Cafeteria Gourmet</a>
-            <ul class="navbar-nav">
-                {{-- O João completa o menu com os CRUDs e a Leticia com as telas dela --}}
-                <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Início</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('vendas.create') }}">Registrar venda</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ route('relatorios.index') }}">Relatórios</a></li>
-            </ul>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+                    aria-controls="menu" aria-expanded="false" aria-label="Abrir menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            {{-- o link da tela atual fica destacado (routeIs compara pelo nome da rota) --}}
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link @if (request()->is('/')) active @endif" href="{{ url('/') }}">Início</a></li>
+                    <li class="nav-item"><a class="nav-link @if (request()->routeIs('produtos.*')) active @endif" href="{{ route('produtos.index') }}">Produtos</a></li>
+                    <li class="nav-item"><a class="nav-link @if (request()->routeIs('categorias.*')) active @endif" href="{{ route('categorias.index') }}">Categorias</a></li>
+                    <li class="nav-item"><a class="nav-link @if (request()->routeIs('clientes.*')) active @endif" href="{{ route('clientes.index') }}">Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link @if (request()->routeIs('pedidos.*')) active @endif" href="{{ route('pedidos.index') }}">Pedidos</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link @if (request()->routeIs('vendas.*')) active @endif" href="{{ route('vendas.create') }}">Registrar venda</a></li>
+                    <li class="nav-item"><a class="nav-link @if (request()->routeIs('relatorios.*')) active @endif" href="{{ route('relatorios.index') }}">Relatórios</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
