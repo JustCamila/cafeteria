@@ -1,0 +1,149 @@
+{
+	"info": {
+		"name": "API Cafeteria - Produtos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Listar produtos (com filtros)",
+			"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+				"pm.test('Status 200', () => pm.response.to.have.status(200));",
+				"pm.test('Tem data, links e meta', () => {",
+				"  const j = pm.response.json();",
+				"  pm.expect(j).to.have.property('data');",
+				"  pm.expect(j).to.have.property('meta');",
+				"});"
+			] } }],
+			"request": {
+				"method": "GET",
+				"header": [{ "key": "Accept", "value": "application/json" }],
+				"url": {
+					"raw": "{{base_url}}/api/produtos?busca=caf&categoria_id=1",
+					"host": ["{{base_url}}"],
+					"path": ["api", "produtos"],
+					"query": [
+						{ "key": "busca", "value": "caf" },
+						{ "key": "categoria_id", "value": "1" }
+					]
+				}
+			}
+		},
+		{
+			"name": "2. Cadastrar produto (201)",
+			"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+				"pm.test('Status 201', () => pm.response.to.have.status(201));",
+				"const j = pm.response.json();",
+				"pm.collectionVariables.set('produto_id', j.data.id);"
+			] } }],
+			"request": {
+				"method": "POST",
+				"header": [
+					{ "key": "Accept", "value": "application/json" },
+					{ "key": "Content-Type", "value": "application/json" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Produto Postman Teste\",\n  \"descricao\": \"Criado pela colecao do Postman\",\n  \"preco_unitario\": 18.50,\n  \"estoque\": 50,\n  \"categoria_id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/produtos",
+					"host": ["{{base_url}}"],
+					"path": ["api", "produtos"]
+				}
+			}
+		},
+		{
+			"name": "3. Cadastrar com dados inválidos (422)",
+			"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+				"pm.test('Status 422', () => pm.response.to.have.status(422));"
+			] } }],
+			"request": {
+				"method": "POST",
+				"header": [
+					{ "key": "Accept", "value": "application/json" },
+					{ "key": "Content-Type", "value": "application/json" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"\",\n  \"preco_unitario\": -5\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/produtos",
+					"host": ["{{base_url}}"],
+					"path": ["api", "produtos"]
+				}
+			}
+		},
+		{
+			"name": "4. Exibir produto (200)",
+			"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+				"pm.test('Status 200', () => pm.response.to.have.status(200));"
+			] } }],
+			"request": {
+				"method": "GET",
+				"header": [{ "key": "Accept", "value": "application/json" }],
+				"url": {
+					"raw": "{{base_url}}/api/produtos/{{produto_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "produtos", "{{produto_id}}"]
+				}
+			}
+		},
+		{
+			"name": "5. Atualizar produto (200)",
+			"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+				"pm.test('Status 200', () => pm.response.to.have.status(200));"
+			] } }],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{ "key": "Accept", "value": "application/json" },
+					{ "key": "Content-Type", "value": "application/json" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Produto Postman Teste Atualizado\",\n  \"descricao\": \"Descricao atualizada\",\n  \"preco_unitario\": 22.00,\n  \"categoria_id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/produtos/{{produto_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "produtos", "{{produto_id}}"]
+				}
+			}
+		},
+		{
+			"name": "6. Remover produto (204)",
+			"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+				"pm.test('Status 204', () => pm.response.to.have.status(204));"
+			] } }],
+			"request": {
+				"method": "DELETE",
+				"header": [{ "key": "Accept", "value": "application/json" }],
+				"url": {
+					"raw": "{{base_url}}/api/produtos/{{produto_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "produtos", "{{produto_id}}"]
+				}
+			}
+		},
+		{
+			"name": "7. Exibir produto removido (404)",
+			"event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+				"pm.test('Status 404', () => pm.response.to.have.status(404));"
+			] } }],
+			"request": {
+				"method": "GET",
+				"header": [{ "key": "Accept", "value": "application/json" }],
+				"url": {
+					"raw": "{{base_url}}/api/produtos/{{produto_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["api", "produtos", "{{produto_id}}"]
+				}
+			}
+		}
+	],
+	"variable": [
+		{ "key": "base_url", "value": "http://127.0.0.1:8000" },
+		{ "key": "produto_id", "value": "" }
+	]
+}
