@@ -14,7 +14,7 @@ Disciplinas: **Banco de Dados II** (Prof. Bruno Dion) e **Desenvolvimento Back-E
 | Camila | Banco de dados, Neon, DER, migrations, seeders, índices, Models, projeto Laravel base, relatório e README |
 | Leticia | Functions, stored procedures, triggers, Services de integração com o banco e telas de demonstração |
 | João | CRUD web (Resource Controllers, Form Requests, Services de lógica de negócio e views Blade) |
-| Rhauan | API REST, testes automatizados, coleção do Postman, backup/restauração final e script SQL final |
+| Rhauan | API REST, testes automatizados, coleção do Postman, backup/restauração |
 
 --- 
 
